@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
+        <!-- provide dropdown list of themes -->
         <Spinner
             android:id="@+id/spTheme"
             android:layout_width="match_parent"
@@ -27,6 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
+        <!-- Allow user to slide a handle to select numeric value -->
         <SeekBar
             android:id="@+id/seekFont"
             android:max="30"

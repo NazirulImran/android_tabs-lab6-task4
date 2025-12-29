@@ -7,13 +7,13 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 class MyViewPagerAdapter(fa: FragmentActivity) :
     FragmentStateAdapter(fa) {
 
-    override fun getItemCount(): Int = 3
+    override fun getItemCount(): Int = 3 //tells ViewPager2 how many pages exist
 
-    override fun createFragment(position: Int): Fragment {
+    override fun createFragment(position: Int): Fragment { //create fragment for each page
         return when (position) {
-            0 -> HomeFragment()
-            1 -> StatusFragment()
-            else -> SettingFragment()
+            0 -> HomeFragment() //page 1
+            1 -> StatusFragment() //page 2
+            else -> SettingFragment() //page 3
         }
     }
 }

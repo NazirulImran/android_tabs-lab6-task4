@@ -15,12 +15,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val viewPager = findViewById<ViewPager2>(R.id.viewPager)
-        val tabLayout = findViewById<TabLayout>(R.id.tabLayout)
+        //find layout components in layout
+        val viewPager = findViewById<ViewPager2>(R.id.viewPager) //swipeable pages
+        val tabLayout = findViewById<TabLayout>(R.id.tabLayout) //tabs at the top
 
-        viewPager.adapter = MyViewPagerAdapter(this)
+        viewPager.adapter = MyViewPagerAdapter(this) //set adapter for viewpager
 
-        TabLayoutMediator(tabLayout, viewPager) { tab, pos ->
+        // link tabs and pages
+        TabLayoutMediator(tabLayout, viewPager) { tab, pos -> //set tab based on position
             tab.text = listOf("Home", "Status", "Settings")[pos]
         }.attach()
     }

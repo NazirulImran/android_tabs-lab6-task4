@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"/>
 
+    <!-- style line: make the progress bar appear as loading bar -->
     <ProgressBar
         android:id="@+id/lightProgress"
         style="?android:attr/progressBarStyleHorizontal"

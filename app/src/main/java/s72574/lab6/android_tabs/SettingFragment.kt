@@ -20,6 +20,8 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
     {
         super.onViewCreated(view, savedInstanceState)
 
+        //val = value can't be change
+        //var = value can be change
         val etUsername = view.findViewById<EditText>(R.id.etUsername)
         val spTheme = view.findViewById<Spinner>(R.id.spTheme)
         val seekFont = view.findViewById<SeekBar>(R.id.seekFont)
@@ -33,7 +35,7 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
             themes
         )
 
-        // SeekBar display (min 12)
+        // listen to seekbar changes and updates the font size label dynamically while enforcing min value (12)
         seekFont.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress:
@@ -41,11 +43,11 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
                 val size = if (progress < 12) 12 else progress
                 tvFontLabel.text = "Font Size: $size"
             }
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {} //detect when user start dragging seekbar
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {} //detect when user stop dragging seekbar
         })
 
-        // Load prefs into form
+        // Load prefs choose by user into form
         loadPrefsToForm(etUsername, spTheme, seekFont, tvFontLabel)
 
         // Save button
@@ -59,6 +61,7 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
             Toast.LENGTH_SHORT).show()
     }
 
+    //loads saved user preferences from SharedPreferences and fills them into setting form UI
     private fun loadPrefsToForm(
         etUsername: EditText,
         spTheme: Spinner,
@@ -73,24 +76,31 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
         val theme = sp.getString(Prefs.KEY_THEME, "Blue") ?: "Blue"
         val fontSize = sp.getInt(Prefs.KEY_FONT_SIZE, 18)
 
-        etUsername.setText(username)
+        etUsername.setText(username) //apply values to UI components
+        //set spinner selection
         spTheme.setSelection(themes.indexOf(theme).coerceAtLeast(0))
-
+        //set font size
         seekFont.progress = fontSize
-        tvFontLabel.text = "Font Size: $fontSize"
+        tvFontLabel.text = "Font Size: $fontSize" //update label
     }
 
-    private fun savePrefs(etUsername: EditText, spTheme: Spinner,
-                          seekFont: SeekBar) {
-        val username = etUsername.text.toString().trim().ifEmpty {
-            "Guest" }
-        val theme = spTheme.selectedItem.toString()
-        val size = if (seekFont.progress < 12) 12 else
+    //saves user input to SharedPreferences
+    private fun savePrefs(
+        etUsername: EditText,
+        spTheme: Spinner,
+        seekFont: SeekBar
+    ) {
+        val username = etUsername.text.toString().trim().ifEmpty { //trim/removes leading/trailing spaces
+            "Guest" } //prevent empty usernames
+        val theme = spTheme.selectedItem.toString() //read selected theme
+        val size = if (seekFont.progress < 12) 12 else //read current seakbar value, enforce min size = 12
             seekFont.progress
 
         val sp =
+            //open app's preference storage file
             requireActivity().getSharedPreferences(Prefs.FILE_NAME,
                 Context.MODE_PRIVATE)
+        //saves values to SharedPreferences
         sp.edit()
             .putString(Prefs.KEY_USERNAME, username)
             .putString(Prefs.KEY_THEME, theme)
